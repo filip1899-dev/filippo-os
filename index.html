@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Filippo OS</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8f9fa;padding:1.5rem}
+.cover{background:#0C447C;border-radius:12px;padding:2rem 2rem 1.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.cover-grid{position:absolute;inset:0;opacity:.06;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:32px 32px}
+.cover-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;position:relative}
+.cover-name{font-size:22px;font-weight:500;color:#fff}
+.cover-sub{font-size:13px;color:#85B7EB;margin-top:3px}
+.cover-date{font-size:12px;color:#85B7EB;text-align:right}
+.cover-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;position:relative}
+.cstat{background:rgba(255,255,255,.1);border-radius:8px;padding:.75rem 1rem}
+.cstat-val{font-size:22px;font-weight:500;color:#fff}
+.cstat-lbl{font-size:11px;color:#85B7EB;margin-top:2px}
+.nav{display:flex;gap:4px;border-bottom:1px solid #e5e7eb;margin-bottom:1.5rem}
+.ntab{padding:6px 14px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:#6b7280;background:none;border-top:none;border-left:none;border-right:none}
+.ntab:hover{color:#111}
+.ntab.on{color:#185FA5;border-bottom-color:#185FA5;font-weight:500}
+.sec{display:none}.sec.on{display:block}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:1.5rem}
+.pcard{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1rem}
+.pcard-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
+.pcard-name{font-size:14px;font-weight:500;color:#111}
+.pcard-next{font-size:12px;color:#6b7280;margin-bottom:.75rem;line-height:1.4}
+.prog-wrap{height:4px;background:#f3f4f6;border-radius:2px;overflow:hidden;margin-bottom:.5rem}
+.prog-fill{height:100%;border-radius:2px;transition:width 1s ease}
+.prog-row{display:flex;justify-content:space-between;font-size:11px;color:#6b7280}
+.badge{display:inline-flex;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:500}
+.b-dev{background:#E6F1FB;color:#0C447C}
+.b-biz{background:#FAEEDA;color:#633806}
+.b-car{background:#EAF3DE;color:#27500A}
+.b-p1{background:#FCEBEB;color:#791F1F}
+.b-p2{background:#FAEEDA;color:#633806}
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.kcol{background:#f3f4f6;border-radius:12px;padding:.75rem}
+.kcol-hdr{font-size:12px;font-weight:500;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.75rem;display:flex;align-items:center;justify-content:space-between}
+.kcnt{font-size:11px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:2px 7px}
+.ktask{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:.65rem .75rem;margin-bottom:6px;cursor:grab}
+.ktask-name{font-size:13px;color:#111;margin-bottom:4px}
+.ktask-meta{display:flex;gap:5px}
+.ktag{font-size:10px;padding:1px 6px;border-radius:8px;background:#f3f4f6;color:#6b7280}
+.ktask.dragging{opacity:.4}
+.kcol.drag-over{border:2px dashed #378ADD}
+.cal-wrap{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1rem}
+.cal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.cal-title{font-size:15px;font-weight:500;color:#111}
+.cal-btn{background:none;border:1px solid #e5e7eb;border-radius:8px;padding:3px 10px;font-size:13px;color:#6b7280;cursor:pointer}
+.cal-btn:hover{color:#111}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-dn{text-align:center;font-size:11px;color:#6b7280;padding:4px 0;font-weight:500}
+.cal-d{min-height:56px;border-radius:8px;padding:4px 5px;font-size:12px;color:#6b7280;background:#f9fafb;cursor:pointer}
+.cal-d:hover{background:#fff;border:1px solid #e5e7eb}
+.cal-d.today{background:#fff;border:2px solid #378ADD}
+.cal-d.today .dn{font-weight:500;color:#185FA5}
+.cal-d.om{opacity:.3}
+.dn{font-size:12px;margin-bottom:2px}
+.ev{font-size:10px;padding:1px 4px;border-radius:3px;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev-b{background:#B5D4F4;color:#0C447C}
+.ev-p{background:#CECBF6;color:#3C3489}
+.ev-a{background:#FAC775;color:#633806}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.chart-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1rem}
+.chart-lbl{font-size:13px;font-weight:500;color:#111;margin-bottom:.75rem}
+.chart-legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:.5rem}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:11px;color:#6b7280}
+.leg-sq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+@media(max-width:600px){
+  .cover-stats{grid-template-columns:repeat(2,1fr)}
+  .kanban{grid-template-columns:1fr}
+  .charts-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-grid"></div>
+  <div class="cover-top">
+    <div>
+      <div class="cover-name">Filippo OS</div>
+      <div class="cover-sub">Personal workspace · Milano</div>
+    </div>
+    <div class="cover-date" id="cover-date"></div>
+  </div>
+  <div class="cover-stats">
+    <div class="cstat"><div class="cstat-val">3</div><div class="cstat-lbl">Progetti attivi</div></div>
+    <div class="cstat"><div class="cstat-val" id="todo-cnt">7</div><div class="cstat-lbl">Task aperti</div></div>
+    <div class="cstat"><div class="cstat-val" id="done-cnt">12</div><div class="cstat-lbl">Completati</div></div>
+    <div class="cstat"><div class="cstat-val">2</div><div class="cstat-lbl">Appuntamenti</div></div>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="ntab on" onclick="sw('projects')">Progetti</button>
+  <button class="ntab" onclick="sw('kanban')">Kanban</button>
+  <button class="ntab" onclick="sw('calendar')">Calendario</button>
+  <button class="ntab" onclick="sw('stats')">Stats</button>
+</div>
+
+<div id="projects" class="sec on">
+  <div class="cards-grid" id="proj-grid"></div>
+</div>
+
+<div id="kanban" class="sec">
+  <div class="kanban" id="kanban-board"></div>
+</div>
+
+<div id="calendar" class="sec">
+  <div class="cal-wrap">
+    <div class="cal-hdr">
+      <span class="cal-title" id="cal-title"></span>
+      <div style="display:flex;gap:4px">
+        <button class="cal-btn" onclick="cm(-1)">&#8249;</button>
+        <button class="cal-btn" onclick="cm(0)">Oggi</button>
+        <button class="cal-btn" onclick="cm(1)">&#8250;</button>
+      </div>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+</div>
+
+<div id="stats" class="sec">
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-lbl">Task per progetto</div>
+      <div class="chart-legend">
+        <span class="leg-item"><span class="leg-sq" style="background:#378ADD"></span>Amerigo</span>
+        <span class="leg-item"><span class="leg-sq" style="background:#EF9F27"></span>Phoenix</span>
+        <span class="leg-item"><span class="leg-sq" style="background:#639922"></span>Career</span>
+      </div>
+      <div style="position:relative;height:200px"><canvas id="c1"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-lbl">Completamento settimanale</div>
+      <div class="chart-legend">
+        <span class="leg-item"><span class="leg-sq" style="background:#185FA5"></span>Done</span>
+      </div>
+      <div style="position:relative;height:200px"><canvas id="c2"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-lbl">Status task</div>
+      <div class="chart-legend">
+        <span class="leg-item"><span class="leg-sq" style="background:#888780"></span>Todo</span>
+        <span class="leg-item"><span class="leg-sq" style="background:#378ADD"></span>In progress</span>
+        <span class="leg-item"><span class="leg-sq" style="background:#639922"></span>Done</span>
+      </div>
+      <div style="position:relative;height:200px"><canvas id="c3"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-lbl">Attivita ultimi 7 giorni</div>
+      <div class="chart-legend">
+        <span class="leg-item"><span class="leg-sq" style="background:#B5D4F4"></span>Aperti</span>
+        <span class="leg-item"><span class="leg-sq" style="background:#185FA5"></span>Chiusi</span>
+      </div>
+      <div style="position:relative;height:200px"><canvas id="c4"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const projects=[
+  {name:"Amerigo",area:"Dev",pri:"P1",prog:35,tasks:8,next:"Implementare metodo reddituale",bc:"b-dev",color:"#378ADD"},
+  {name:"Phoenix SRL",area:"Business",pri:"P2",prog:60,tasks:5,next:"Aggiornare scadenziario",bc:"b-biz",color:"#EF9F27"},
+  {name:"Career",area:"Career",pri:"P2",prog:20,tasks:4,next:"Follow-up candidature",bc:"b-car",color:"#639922"},
+];
+
+function sw(id){
+  document.querySelectorAll('.ntab').forEach((t,i)=>{t.classList.toggle('on',['projects','kanban','calendar','stats'][i]===id)});
+  document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('on',s.id===id));
+}
+
+document.getElementById('cover-date').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+const pg=document.getElementById('proj-grid');
+projects.forEach(p=>{
+  const d=document.createElement('div');d.className='pcard';
+  d.innerHTML=`<div class="pcard-top"><span class="pcard-name">${p.name}</span><span class="badge b-p${p.pri[1]}">${p.pri}</span></div><div class="pcard-next">${p.next}</div><div class="prog-wrap"><div class="prog-fill" style="width:${p.prog}%;background:${p.color}"></div></div><div class="prog-row"><span class="badge ${p.bc}">${p.area}</span><span>${p.prog}% · ${p.tasks} task</span></div>`;
+  pg.appendChild(d);
+});
+
+const taskData=[
+  {id:1,name:"Metodo reddituale",proj:"Amerigo",ctx:"Deep work",col:"todo"},
+  {id:2,name:"Update bilancio Phoenix",proj:"Phoenix",ctx:"Quick",col:"todo"},
+  {id:3,name:"Follow-up EIF",proj:"Career",ctx:"Call",col:"todo"},
+  {id:4,name:"API endpoint valuation",proj:"Amerigo",ctx:"Deep work",col:"inprog"},
+  {id:5,name:"Fattura fornitore",proj:"Phoenix",ctx:"Quick",col:"inprog"},
+  {id:6,name:"CV aggiornamento",proj:"Career",ctx:"Quick",col:"done"},
+  {id:7,name:"Supabase schema",proj:"Amerigo",ctx:"Deep work",col:"done"},
+];
+const cols={todo:"Todo",inprog:"In progress",done:"Done"};
+
+function buildKanban(){
+  const kb=document.getElementById('kanban-board');kb.innerHTML='';
+  Object.keys(cols).forEach(k=>{
+    const tasks=taskData.filter(t=>t.col===k);
+    const col=document.createElement('div');col.className='kcol';col.dataset.col=k;
+    col.innerHTML=`<div class="kcol-hdr"><span>${cols[k]}</span><span class="kcnt">${tasks.length}</span></div>`;
+    tasks.forEach(t=>{
+      const el=document.createElement('div');el.className='ktask';el.draggable=true;el.dataset.id=t.id;
+      el.innerHTML=`<div class="ktask-name">${t.name}</div><div class="ktask-meta"><span class="ktag">${t.proj}</span><span class="ktag">${t.ctx}</span></div>`;
+      el.addEventListener('dragstart',()=>{el.classList.add('dragging');window._drag=t.id;});
+      el.addEventListener('dragend',()=>el.classList.remove('dragging'));
+      col.appendChild(el);
+    });
+    col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('drag-over');});
+    col.addEventListener('dragleave',()=>col.classList.remove('drag-over'));
+    col.addEventListener('drop',e=>{e.preventDefault();col.classList.remove('drag-over');const task=taskData.find(t=>t.id===window._drag);if(task){task.col=k;buildKanban();}document.getElementById('todo-cnt').textContent=taskData.filter(t=>t.col==='todo').length;document.getElementById('done-cnt').textContent=taskData.filter(t=>t.col==='done').length;});
+    kb.appendChild(col);
+  });
+}
+buildKanban();
+
+const months=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+const dnames=['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
+const now=new Date();
+let cur=new Date(now.getFullYear(),now.getMonth(),1);
+const evts={'2026-4-21':[{t:'Udienza Milano',c:'ev-b'}],'2026-4-23':[{t:'Amerigo demo',c:'ev-p'}],'2026-4-28':[{t:'Phoenix call',c:'ev-a'}]};
+
+function buildCal(){
+  const y=cur.getFullYear(),m=cur.getMonth();
+  document.getElementById('cal-title').textContent=months[m]+' '+y;
+  const g=document.getElementById('cal-grid');g.innerHTML='';
+  dnames.forEach(d=>{const el=document.createElement('div');el.className='cal-dn';el.textContent=d;g.appendChild(el);});
+  const sd=(new Date(y,m,1).getDay()+6)%7;
+  const dim=new Date(y,m+1,0).getDate();
+  const pd=new Date(y,m,0).getDate();
+  for(let i=0;i<sd;i++){const el=document.createElement('div');el.className='cal-d om';el.innerHTML=`<div class="dn">${pd-sd+1+i}</div>`;g.appendChild(el);}
+  for(let d=1;d<=dim;d++){
+    const el=document.createElement('div');
+    const k=`${y}-${m+1}-${d}`;
+    const isT=now.getFullYear()===y&&now.getMonth()===m&&now.getDate()===d;
+    el.className='cal-d'+(isT?' today':'');
+    let h=`<div class="dn">${d}</div>`;
+    if(evts[k])evts[k].forEach(e=>{h+=`<div class="ev ${e.c}">${e.t}</div>`;});
+    el.innerHTML=h;g.appendChild(el);
+  }
+  const tot=sd+dim;const rem=(7-tot%7)%7;
+  for(let i=1;i<=rem;i++){const el=document.createElement('div');el.className='cal-d om';el.innerHTML=`<div class="dn">${i}</div>`;g.appendChild(el);}
+}
+function cm(d){if(d===0)cur=new Date(now.getFullYear(),now.getMonth(),1);else cur=new Date(cur.getFullYear(),cur.getMonth()+d,1);buildCal();}
+buildCal();
+
+const co={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}};
+new Chart(document.getElementById('c1'),{type:'bar',data:{labels:['Amerigo','Phoenix','Career'],datasets:[{data:[8,5,4],backgroundColor:['#378ADD','#EF9F27','#639922'],borderRadius:4}]},options:{...co,scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.06)'},ticks:{stepSize:2}}}}});
+new Chart(document.getElementById('c2'),{type:'line',data:{labels:['Lun','Mar','Mer','Gio','Ven'],datasets:[{data:[2,4,1,3,2],borderColor:'#185FA5',backgroundColor:'rgba(55,138,221,.1)',fill:true,tension:.4,pointBackgroundColor:'#185FA5'}]},options:{...co,scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.06)'},ticks:{stepSize:1}}}}});
+new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:['Todo','In progress','Done'],datasets:[{data:[7,5,12],backgroundColor:['#888780','#378ADD','#639922'],borderWidth:0,hoverOffset:4}]},options:{...co,cutout:'65%'}});
+new Chart(document.getElementById('c4'),{type:'bar',data:{labels:['Lun','Mar','Mer','Gio','Ven','Sab','Dom'],datasets:[{label:'Aperti',data:[3,1,2,0,2,1,0],backgroundColor:'#B5D4F4',borderRadius:3},{label:'Chiusi',data:[2,3,1,2,1,0,1],backgroundColor:'#185FA5',borderRadius:3}]},options:{...co,scales:{x:{stacked:false,grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.06)'},ticks:{stepSize:1}}}}});
+</script>
+</body>
+</html>
