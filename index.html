@@ -6,194 +6,407 @@
 <title>Filippo OS</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8f9fa;padding:1.5rem}
-.cover{background:#0C447C;border-radius:12px;padding:2rem 2rem 1.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
-.cover-grid{position:absolute;inset:0;opacity:.06;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:32px 32px}
-.cover-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;position:relative}
-.cover-name{font-size:22px;font-weight:500;color:#fff}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5;min-height:100vh}
+.topbar{background:#0C447C;padding:.6rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-logo{font-size:15px;font-weight:500;color:#fff;letter-spacing:-.2px}
+.topbar-nav{display:flex;gap:2px}
+.tnav{padding:5px 12px;font-size:12px;color:#85B7EB;background:none;border:none;border-radius:6px;cursor:pointer;transition:all .15s}
+.tnav:hover,.tnav.on{background:rgba(255,255,255,.15);color:#fff}
+.topbar-date{font-size:12px;color:#85B7EB}
+.main{max-width:960px;margin:0 auto;padding:1.25rem}
+.cover{background:#0C447C;border-radius:12px;padding:1.75rem 2rem 1.5rem;margin-bottom:1.25rem;position:relative;overflow:hidden}
+.cover-grid{position:absolute;inset:0;opacity:.05;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:28px 28px}
+.cover-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;position:relative}
+.cover-name{font-size:24px;font-weight:500;color:#fff}
 .cover-sub{font-size:13px;color:#85B7EB;margin-top:3px}
-.cover-date{font-size:12px;color:#85B7EB;text-align:right}
-.cover-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;position:relative}
-.cstat{background:rgba(255,255,255,.1);border-radius:8px;padding:.75rem 1rem}
-.cstat-val{font-size:22px;font-weight:500;color:#fff}
-.cstat-lbl{font-size:11px;color:#85B7EB;margin-top:2px}
-.nav{display:flex;gap:4px;border-bottom:1px solid #e5e7eb;margin-bottom:1.5rem}
-.ntab{padding:6px 14px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:#6b7280;background:none;border-top:none;border-left:none;border-right:none}
-.ntab:hover{color:#111}
-.ntab.on{color:#185FA5;border-bottom-color:#185FA5;font-weight:500}
+.cover-tagline{font-size:12px;color:#85B7EB;text-align:right;line-height:1.6}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;position:relative}
+.kpi{background:rgba(255,255,255,.1);border-radius:8px;padding:.65rem .9rem;cursor:default}
+.kpi-val{font-size:20px;font-weight:500;color:#fff}
+.kpi-lbl{font-size:11px;color:#85B7EB;margin-top:1px}
 .sec{display:none}.sec.on{display:block}
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:1.5rem}
-.pcard{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1rem}
-.pcard-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
-.pcard-name{font-size:14px;font-weight:500;color:#111}
-.pcard-next{font-size:12px;color:#6b7280;margin-bottom:.75rem;line-height:1.4}
-.prog-wrap{height:4px;background:#f3f4f6;border-radius:2px;overflow:hidden;margin-bottom:.5rem}
-.prog-fill{height:100%;border-radius:2px;transition:width 1s ease}
-.prog-row{display:flex;justify-content:space-between;font-size:11px;color:#6b7280}
-.badge{display:inline-flex;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:500}
+.page-title{font-size:17px;font-weight:500;color:#111;margin-bottom:1rem}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem}
+.card-title{font-size:14px;font-weight:500;color:#111}
+.badge{display:inline-flex;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:500}
 .b-dev{background:#E6F1FB;color:#0C447C}
 .b-biz{background:#FAEEDA;color:#633806}
 .b-car{background:#EAF3DE;color:#27500A}
+.b-ins{background:#EEEDFE;color:#3C3489}
 .b-p1{background:#FCEBEB;color:#791F1F}
 .b-p2{background:#FAEEDA;color:#633806}
-.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.kcol{background:#f3f4f6;border-radius:12px;padding:.75rem}
-.kcol-hdr{font-size:12px;font-weight:500;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.75rem;display:flex;align-items:center;justify-content:space-between}
-.kcnt{font-size:11px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:2px 7px}
-.ktask{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:.65rem .75rem;margin-bottom:6px;cursor:grab}
-.ktask-name{font-size:13px;color:#111;margin-bottom:4px}
-.ktask-meta{display:flex;gap:5px}
+.b-p3{background:#f3f4f6;color:#6b7280}
+.b-act{background:#EAF3DE;color:#27500A}
+.b-pau{background:#FAEEDA;color:#633806}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:1.25rem}
+.pcard{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1rem;transition:border-color .15s;cursor:pointer}
+.pcard:hover{border-color:#378ADD}
+.pcard-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem}
+.pcard-name{font-size:14px;font-weight:500;color:#111}
+.pcard-next{font-size:12px;color:#6b7280;margin:.4rem 0 .65rem;line-height:1.4;min-height:32px}
+.prog-wrap{height:4px;background:#f3f4f6;border-radius:2px;overflow:hidden;margin-bottom:.4rem}
+.prog-fill{height:100%;border-radius:2px;transition:width 1.2s ease}
+.pcard-foot{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#6b7280}
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kcol{background:#f8f9fa;border:1px solid #e5e7eb;border-radius:12px;padding:.75rem;min-height:300px}
+.kcol-hdr{font-size:11px;font-weight:500;color:#6b7280;text-transform:uppercase;letter-spacing:.6px;margin-bottom:.75rem;display:flex;align-items:center;justify-content:space-between}
+.kcnt{font-size:11px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1px 7px}
+.ktask{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:.65rem .75rem;margin-bottom:6px;cursor:grab;transition:border-color .15s}
+.ktask:hover{border-color:#378ADD}
+.ktask.dragging{opacity:.35;cursor:grabbing}
+.kcol.drag-over{border:2px dashed #378ADD;background:#f0f7ff}
+.ktask-name{font-size:13px;color:#111;margin-bottom:5px;line-height:1.3}
+.ktask-meta{display:flex;gap:4px;flex-wrap:wrap}
 .ktag{font-size:10px;padding:1px 6px;border-radius:8px;background:#f3f4f6;color:#6b7280}
-.ktask.dragging{opacity:.4}
-.kcol.drag-over{border:2px dashed #378ADD}
-.cal-wrap{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1rem}
+.ktag-dw{background:#EAF3DE;color:#27500A}
+.ktag-call{background:#E6F1FB;color:#0C447C}
+.ktag-q{background:#FAEEDA;color:#633806}
+.add-task-row{display:flex;gap:6px;margin-top:.5rem}
+.add-task-row input{flex:1;padding:6px 10px;font-size:12px;border:1px solid #e5e7eb;border-radius:8px;outline:none}
+.add-task-row input:focus{border-color:#378ADD}
+.add-task-row button{padding:6px 12px;font-size:12px;background:#0C447C;color:#fff;border:none;border-radius:8px;cursor:pointer}
 .cal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
 .cal-title{font-size:15px;font-weight:500;color:#111}
-.cal-btn{background:none;border:1px solid #e5e7eb;border-radius:8px;padding:3px 10px;font-size:13px;color:#6b7280;cursor:pointer}
-.cal-btn:hover{color:#111}
+.cal-btn{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:4px 12px;font-size:13px;color:#6b7280;cursor:pointer}
+.cal-btn:hover{border-color:#378ADD;color:#111}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-.cal-dn{text-align:center;font-size:11px;color:#6b7280;padding:4px 0;font-weight:500}
-.cal-d{min-height:56px;border-radius:8px;padding:4px 5px;font-size:12px;color:#6b7280;background:#f9fafb;cursor:pointer}
+.cal-dn{text-align:center;font-size:11px;color:#6b7280;padding:5px 0;font-weight:500}
+.cal-d{min-height:64px;border-radius:8px;padding:5px;font-size:12px;color:#6b7280;background:#f9fafb;cursor:pointer;transition:all .15s}
 .cal-d:hover{background:#fff;border:1px solid #e5e7eb}
 .cal-d.today{background:#fff;border:2px solid #378ADD}
 .cal-d.today .dn{font-weight:500;color:#185FA5}
-.cal-d.om{opacity:.3}
+.cal-d.om{opacity:.25}
 .dn{font-size:12px;margin-bottom:2px}
 .ev{font-size:10px;padding:1px 4px;border-radius:3px;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ev-b{background:#B5D4F4;color:#0C447C}
 .ev-p{background:#CECBF6;color:#3C3489}
 .ev-a{background:#FAC775;color:#633806}
-.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ev-g{background:#C0DD97;color:#27500A}
+.add-evt-row{display:flex;gap:6px;margin-top:.75rem;flex-wrap:wrap}
+.add-evt-row input,.add-evt-row select{padding:6px 10px;font-size:12px;border:1px solid #e5e7eb;border-radius:8px;outline:none;background:#fff}
+.add-evt-row input:focus,.add-evt-row select:focus{border-color:#378ADD}
+.add-evt-row button{padding:6px 14px;font-size:12px;background:#0C447C;color:#fff;border:none;border-radius:8px;cursor:pointer}
+.daily-prog{height:6px;background:#f3f4f6;border-radius:3px;overflow:hidden;margin-bottom:1rem}
+.daily-prog-fill{height:100%;background:#0C447C;border-radius:3px;transition:width .4s}
+.task-grp{margin-bottom:.75rem}
+.task-grp-lbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:#6b7280;margin-bottom:.4rem}
+.daily-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f3f4f6;cursor:pointer}
+.daily-item:last-child{border-bottom:none}
+.dcheck{width:18px;height:18px;border:1.5px solid #d1d5db;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.dcheck.on{background:#0C447C;border-color:#0C447C}
+.dcheck.on::after{content:'';display:block;width:10px;height:6px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.dlabel{font-size:13px;color:#111;flex:1;transition:color .15s}
+.dlabel.done{text-decoration:line-through;color:#9ca3af}
+.dctx{font-size:11px;padding:2px 7px;border-radius:10px;background:#f3f4f6;color:#6b7280}
+.daily-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.75rem;padding-top:.75rem;border-top:1px solid #f3f4f6}
+.daily-score{font-size:13px;font-weight:500;color:#111}
+.reset-btn{font-size:12px;color:#6b7280;background:none;border:1px solid #e5e7eb;border-radius:8px;padding:4px 12px;cursor:pointer}
+.reset-btn:hover{color:#111;border-color:#d1d5db}
+.news-cat{margin-bottom:1rem}
+.news-cat-lbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:#6b7280;margin-bottom:.5rem}
+.news-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;gap:10px}
+.news-item:last-child{border-bottom:none}
+.news-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.news-av{width:28px;height:28px;border-radius:6px;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#0C447C;flex-shrink:0;border:1px solid #e5e7eb}
+.news-name{font-size:13px;font-weight:500;color:#111}
+.news-desc{font-size:11px;color:#6b7280;margin-top:1px}
+.news-freq{font-size:11px;color:#9ca3af;flex-shrink:0;min-width:40px;text-align:right}
+.tog{width:34px;height:19px;border-radius:10px;background:#e5e7eb;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;border:none;padding:0}
+.tog.on{background:#0C447C}
+.tog::after{content:'';position:absolute;width:15px;height:15px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s}
+.tog.on::after{left:17px}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .chart-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1rem}
-.chart-lbl{font-size:13px;font-weight:500;color:#111;margin-bottom:.75rem}
+.chart-lbl{font-size:13px;font-weight:500;color:#111;margin-bottom:.5rem}
 .chart-legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:.5rem}
-.leg-item{display:flex;align-items:center;gap:4px;font-size:11px;color:#6b7280}
+.leg{display:flex;align-items:center;gap:4px;font-size:11px;color:#6b7280}
 .leg-sq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
-@media(max-width:600px){
-  .cover-stats{grid-template-columns:repeat(2,1fr)}
+.weekly-form{display:flex;flex-direction:column;gap:1rem}
+.wf-label{font-size:13px;font-weight:500;color:#111;margin-bottom:.3rem}
+.wf-textarea{width:100%;padding:.65rem .85rem;font-size:13px;border:1px solid #e5e7eb;border-radius:8px;resize:vertical;min-height:72px;outline:none;font-family:inherit;color:#111}
+.wf-textarea:focus{border-color:#378ADD}
+.wf-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.wf-item{display:flex;flex-direction:column}
+.wf-rating{display:flex;gap:4px;margin-top:.3rem}
+.wf-star{font-size:18px;cursor:pointer;color:#d1d5db;transition:color .1s}
+.wf-star.on{color:#EF9F27}
+.save-btn{padding:.65rem 1.5rem;background:#0C447C;color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;font-weight:500;align-self:flex-start}
+.save-btn:hover{background:#185FA5}
+.saved-msg{font-size:12px;color:#27500A;margin-left:.75rem;display:none}
+@media(max-width:640px){
+  .kpis{grid-template-columns:repeat(3,1fr)}
   .kanban{grid-template-columns:1fr}
   .charts-grid{grid-template-columns:1fr}
+  .wf-row{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
+<div class="topbar">
+  <span class="topbar-logo">Filippo OS</span>
+  <div class="topbar-nav">
+    <button class="tnav on" onclick="nav('home')">Home</button>
+    <button class="tnav" onclick="nav('projects')">Progetti</button>
+    <button class="tnav" onclick="nav('kanban')">Kanban</button>
+    <button class="tnav" onclick="nav('calendar')">Calendario</button>
+    <button class="tnav" onclick="nav('daily')">Daily</button>
+    <button class="tnav" onclick="nav('news')">News</button>
+    <button class="tnav" onclick="nav('stats')">Stats</button>
+    <button class="tnav" onclick="nav('weekly')">Weekly</button>
+  </div>
+  <span class="topbar-date" id="topbar-date"></span>
+</div>
+
+<div class="main">
+
 <div class="cover">
   <div class="cover-grid"></div>
-  <div class="cover-top">
+  <div class="cover-row">
     <div>
       <div class="cover-name">Filippo OS</div>
-      <div class="cover-sub">Personal workspace · Milano</div>
+      <div class="cover-sub">Commercialista · Developer · Entrepreneur · Milano</div>
     </div>
-    <div class="cover-date" id="cover-date"></div>
+    <div class="cover-tagline" id="cover-tagline"></div>
   </div>
-  <div class="cover-stats">
-    <div class="cstat"><div class="cstat-val">3</div><div class="cstat-lbl">Progetti attivi</div></div>
-    <div class="cstat"><div class="cstat-val" id="todo-cnt">7</div><div class="cstat-lbl">Task aperti</div></div>
-    <div class="cstat"><div class="cstat-val" id="done-cnt">12</div><div class="cstat-lbl">Completati</div></div>
-    <div class="cstat"><div class="cstat-val">2</div><div class="cstat-lbl">Appuntamenti</div></div>
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-val" id="k-proj">3</div><div class="kpi-lbl">Progetti attivi</div></div>
+    <div class="kpi"><div class="kpi-val" id="k-todo">0</div><div class="kpi-lbl">Task aperti</div></div>
+    <div class="kpi"><div class="kpi-val" id="k-done">0</div><div class="kpi-lbl">Completati</div></div>
+    <div class="kpi"><div class="kpi-val" id="k-daily">0%</div><div class="kpi-lbl">Daily progress</div></div>
+    <div class="kpi"><div class="kpi-val" id="k-cal">3</div><div class="kpi-lbl">Appuntamenti</div></div>
   </div>
 </div>
 
-<div class="nav">
-  <button class="ntab on" onclick="sw('projects')">Progetti</button>
-  <button class="ntab" onclick="sw('kanban')">Kanban</button>
-  <button class="ntab" onclick="sw('calendar')">Calendario</button>
-  <button class="ntab" onclick="sw('stats')">Stats</button>
+<!-- HOME -->
+<div id="home" class="sec on">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Progetti attivi</span></div>
+      <div id="home-proj"></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Focus oggi</span><span style="font-size:12px;color:#6b7280" id="home-daily-score"></span></div>
+      <div id="home-daily"></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Prossimi appuntamenti</span></div>
+      <div id="home-cal"></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Task in progress</span></div>
+      <div id="home-tasks"></div>
+    </div>
+  </div>
 </div>
 
-<div id="projects" class="sec on">
-  <div class="cards-grid" id="proj-grid"></div>
+<!-- PROJECTS -->
+<div id="projects" class="sec">
+  <div class="proj-grid" id="proj-grid"></div>
 </div>
 
+<!-- KANBAN -->
 <div id="kanban" class="sec">
   <div class="kanban" id="kanban-board"></div>
 </div>
 
+<!-- CALENDAR -->
 <div id="calendar" class="sec">
-  <div class="cal-wrap">
+  <div class="card">
     <div class="cal-hdr">
       <span class="cal-title" id="cal-title"></span>
-      <div style="display:flex;gap:4px">
+      <div style="display:flex;gap:6px">
         <button class="cal-btn" onclick="cm(-1)">&#8249;</button>
         <button class="cal-btn" onclick="cm(0)">Oggi</button>
         <button class="cal-btn" onclick="cm(1)">&#8250;</button>
       </div>
     </div>
     <div class="cal-grid" id="cal-grid"></div>
+    <div class="add-evt-row">
+      <input type="text" id="evt-title" placeholder="Titolo appuntamento..." style="flex:2">
+      <input type="date" id="evt-date">
+      <select id="evt-type">
+        <option value="ev-b">Professionale</option>
+        <option value="ev-p">Dev / Amerigo</option>
+        <option value="ev-a">Phoenix</option>
+        <option value="ev-g">Personale</option>
+      </select>
+      <button onclick="addEvt()">+ Aggiungi</button>
+    </div>
   </div>
 </div>
 
+<!-- DAILY -->
+<div id="daily" class="sec">
+  <div class="card" style="max-width:560px">
+    <div class="card-hdr">
+      <span class="card-title">Daily checklist</span>
+      <button class="reset-btn" onclick="resetDaily()">Reset</button>
+    </div>
+    <div class="daily-prog"><div class="daily-prog-fill" id="dprog"></div></div>
+    <div id="daily-list"></div>
+    <div class="daily-footer">
+      <span class="daily-score" id="daily-score">0 / 9 completati</span>
+      <span style="font-size:12px;color:#6b7280" id="daily-msg"></span>
+    </div>
+  </div>
+</div>
+
+<!-- NEWS -->
+<div id="news" class="sec">
+  <div class="card" style="max-width:600px">
+    <div class="card-hdr"><span class="card-title">News subscriptions</span><span style="font-size:12px;color:#6b7280" id="news-active-count"></span></div>
+    <div id="news-list"></div>
+    <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid #f3f4f6">
+      <div style="display:flex;gap:6px">
+        <input type="text" id="news-input" placeholder="Aggiungi fonte..." style="flex:1;padding:6px 10px;font-size:12px;border:1px solid #e5e7eb;border-radius:8px;outline:none">
+        <button onclick="addNews()" style="padding:6px 14px;font-size:12px;background:#0C447C;color:#fff;border:none;border-radius:8px;cursor:pointer">+ Aggiungi</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
 <div id="stats" class="sec">
   <div class="charts-grid">
     <div class="chart-card">
       <div class="chart-lbl">Task per progetto</div>
       <div class="chart-legend">
-        <span class="leg-item"><span class="leg-sq" style="background:#378ADD"></span>Amerigo</span>
-        <span class="leg-item"><span class="leg-sq" style="background:#EF9F27"></span>Phoenix</span>
-        <span class="leg-item"><span class="leg-sq" style="background:#639922"></span>Career</span>
+        <span class="leg"><span class="leg-sq" style="background:#378ADD"></span>Amerigo</span>
+        <span class="leg"><span class="leg-sq" style="background:#EF9F27"></span>Phoenix</span>
+        <span class="leg"><span class="leg-sq" style="background:#639922"></span>Career</span>
       </div>
-      <div style="position:relative;height:200px"><canvas id="c1"></canvas></div>
+      <div style="position:relative;height:200px"><canvas id="c1" role="img" aria-label="Task per progetto">Amerigo 8, Phoenix 5, Career 4</canvas></div>
     </div>
     <div class="chart-card">
       <div class="chart-lbl">Completamento settimanale</div>
-      <div class="chart-legend">
-        <span class="leg-item"><span class="leg-sq" style="background:#185FA5"></span>Done</span>
-      </div>
-      <div style="position:relative;height:200px"><canvas id="c2"></canvas></div>
+      <div class="chart-legend"><span class="leg"><span class="leg-sq" style="background:#185FA5"></span>Done</span></div>
+      <div style="position:relative;height:200px"><canvas id="c2" role="img" aria-label="Task completati per giorno">Lun 2, Mar 4, Mer 1, Gio 3, Ven 2</canvas></div>
     </div>
     <div class="chart-card">
       <div class="chart-lbl">Status task</div>
       <div class="chart-legend">
-        <span class="leg-item"><span class="leg-sq" style="background:#888780"></span>Todo</span>
-        <span class="leg-item"><span class="leg-sq" style="background:#378ADD"></span>In progress</span>
-        <span class="leg-item"><span class="leg-sq" style="background:#639922"></span>Done</span>
+        <span class="leg"><span class="leg-sq" style="background:#888780"></span>Todo</span>
+        <span class="leg"><span class="leg-sq" style="background:#378ADD"></span>In progress</span>
+        <span class="leg"><span class="leg-sq" style="background:#639922"></span>Done</span>
       </div>
-      <div style="position:relative;height:200px"><canvas id="c3"></canvas></div>
+      <div style="position:relative;height:200px"><canvas id="c3" role="img" aria-label="Status task distribuzione">Todo 7, In progress 5, Done 12</canvas></div>
     </div>
     <div class="chart-card">
       <div class="chart-lbl">Attivita ultimi 7 giorni</div>
       <div class="chart-legend">
-        <span class="leg-item"><span class="leg-sq" style="background:#B5D4F4"></span>Aperti</span>
-        <span class="leg-item"><span class="leg-sq" style="background:#185FA5"></span>Chiusi</span>
+        <span class="leg"><span class="leg-sq" style="background:#B5D4F4"></span>Aperti</span>
+        <span class="leg"><span class="leg-sq" style="background:#185FA5"></span>Chiusi</span>
       </div>
-      <div style="position:relative;height:200px"><canvas id="c4"></canvas></div>
+      <div style="position:relative;height:200px"><canvas id="c4" role="img" aria-label="Attivita aperti e chiusi per giorno">Attivita settimanale</canvas></div>
     </div>
   </div>
 </div>
 
+<!-- WEEKLY REVIEW -->
+<div id="weekly" class="sec">
+  <div class="card" style="max-width:640px">
+    <div class="card-hdr"><span class="card-title">Weekly review</span><span style="font-size:12px;color:#6b7280" id="weekly-week"></span></div>
+    <div class="weekly-form">
+      <div>
+        <div class="wf-label">Cosa ho portato a termine questa settimana?</div>
+        <textarea class="wf-textarea" id="w1" placeholder="Es. Ho completato il modulo DCF di Amerigo, chiamata con Global Plant..."></textarea>
+      </div>
+      <div>
+        <div class="wf-label">Cosa non ho completato e perche?</div>
+        <textarea class="wf-textarea" id="w2" placeholder="Es. Attestazione rimandata per mancanza dati bilancio..."></textarea>
+      </div>
+      <div>
+        <div class="wf-label">Top 3 priorita settimana prossima</div>
+        <textarea class="wf-textarea" id="w3" placeholder="1. &#10;2. &#10;3. " style="min-height:90px"></textarea>
+      </div>
+      <div>
+        <div class="wf-label">Blockers / problemi da risolvere</div>
+        <textarea class="wf-textarea" id="w4" placeholder="Es. Dipendenza da risposta avvocato su Global Plant..."></textarea>
+      </div>
+      <div class="wf-row">
+        <div class="wf-item">
+          <div class="wf-label">Produttivita</div>
+          <div class="wf-rating" id="r-prod"></div>
+        </div>
+        <div class="wf-item">
+          <div class="wf-label">Focus</div>
+          <div class="wf-rating" id="r-focus"></div>
+        </div>
+        <div class="wf-item">
+          <div class="wf-label">Energia</div>
+          <div class="wf-rating" id="r-energia"></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center">
+        <button class="save-btn" onclick="saveWeekly()">Salva review</button>
+        <span class="saved-msg" id="saved-msg">Salvato!</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-const projects=[
-  {name:"Amerigo",area:"Dev",pri:"P1",prog:35,tasks:8,next:"Implementare metodo reddituale",bc:"b-dev",color:"#378ADD"},
-  {name:"Phoenix SRL",area:"Business",pri:"P2",prog:60,tasks:5,next:"Aggiornare scadenziario",bc:"b-biz",color:"#EF9F27"},
-  {name:"Career",area:"Career",pri:"P2",prog:20,tasks:4,next:"Follow-up candidature",bc:"b-car",color:"#639922"},
-];
+const now=new Date();
+document.getElementById('topbar-date').textContent=now.toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'});
+document.getElementById('cover-tagline').innerHTML=now.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'<br>Settimana '+(()=>{const d=new Date(Date.UTC(now.getFullYear(),now.getMonth(),now.getDate()));const dayNum=d.getUTCDay()||7;d.setUTCDate(d.getUTCDate()+4-dayNum);const yearStart=new Date(Date.UTC(d.getUTCFullYear(),0,1));return Math.ceil((((d-yearStart)/86400000)+1)/7)})();
 
-function sw(id){
-  document.querySelectorAll('.ntab').forEach((t,i)=>{t.classList.toggle('on',['projects','kanban','calendar','stats'][i]===id)});
+const tabs=['home','projects','kanban','calendar','daily','news','stats','weekly'];
+function nav(id){
+  document.querySelectorAll('.tnav').forEach((t,i)=>t.classList.toggle('on',tabs[i]===id));
   document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('on',s.id===id));
 }
 
-document.getElementById('cover-date').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const projects=[
+  {id:1,name:"Amerigo",area:"Dev",pri:"P1",status:"Active",prog:35,tasks:8,next:"Implementare metodo reddituale",bc:"b-dev",color:"#378ADD"},
+  {id:2,name:"Phoenix SRL",area:"Business",pri:"P2",status:"Active",prog:60,tasks:5,next:"Aggiornare scadenziario fornitori",bc:"b-biz",color:"#EF9F27"},
+  {id:3,name:"Career",area:"Career",pri:"P2",status:"Active",prog:20,tasks:4,next:"Follow-up candidature EIF",bc:"b-car",color:"#639922"},
+];
 
 const pg=document.getElementById('proj-grid');
 projects.forEach(p=>{
   const d=document.createElement('div');d.className='pcard';
-  d.innerHTML=`<div class="pcard-top"><span class="pcard-name">${p.name}</span><span class="badge b-p${p.pri[1]}">${p.pri}</span></div><div class="pcard-next">${p.next}</div><div class="prog-wrap"><div class="prog-fill" style="width:${p.prog}%;background:${p.color}"></div></div><div class="prog-row"><span class="badge ${p.bc}">${p.area}</span><span>${p.prog}% · ${p.tasks} task</span></div>`;
+  d.innerHTML=`<div class="pcard-top"><span class="pcard-name">${p.name}</span><span class="badge b-p${p.pri[1]}">${p.pri}</span></div><div class="pcard-next">${p.next}</div><div class="prog-wrap"><div class="prog-fill" style="width:${p.prog}%;background:${p.color}"></div></div><div class="pcard-foot"><span class="badge ${p.bc}">${p.area}</span><span>${p.prog}% · ${p.tasks} task</span></div>`;
   pg.appendChild(d);
 });
 
+const hp=document.getElementById('home-proj');
+projects.forEach(p=>{
+  hp.innerHTML+=`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6;font-size:13px"><span style="color:#111;font-weight:500">${p.name}</span><div style="display:flex;align-items:center;gap:8px"><div style="width:80px;height:4px;background:#f3f4f6;border-radius:2px;overflow:hidden"><div style="width:${p.prog}%;height:100%;background:${p.color};border-radius:2px"></div></div><span style="font-size:11px;color:#6b7280">${p.prog}%</span></div></div>`;
+});
+
 const taskData=[
-  {id:1,name:"Metodo reddituale",proj:"Amerigo",ctx:"Deep work",col:"todo"},
-  {id:2,name:"Update bilancio Phoenix",proj:"Phoenix",ctx:"Quick",col:"todo"},
-  {id:3,name:"Follow-up EIF",proj:"Career",ctx:"Call",col:"todo"},
-  {id:4,name:"API endpoint valuation",proj:"Amerigo",ctx:"Deep work",col:"inprog"},
-  {id:5,name:"Fattura fornitore",proj:"Phoenix",ctx:"Quick",col:"inprog"},
-  {id:6,name:"CV aggiornamento",proj:"Career",ctx:"Quick",col:"done"},
-  {id:7,name:"Supabase schema",proj:"Amerigo",ctx:"Deep work",col:"done"},
+  {id:1,name:"Implementare metodo reddituale",proj:"Amerigo",ctx:"Deep work",col:"todo",pri:"P1"},
+  {id:2,name:"Update bilancio Phoenix",proj:"Phoenix",ctx:"Quick",col:"todo",pri:"P2"},
+  {id:3,name:"Follow-up EIF",proj:"Career",ctx:"Call",col:"todo",pri:"P2"},
+  {id:4,name:"Fix bug DCF engine",proj:"Amerigo",ctx:"Deep work",col:"todo",pri:"P1"},
+  {id:5,name:"API endpoint valuation",proj:"Amerigo",ctx:"Deep work",col:"inprog",pri:"P1"},
+  {id:6,name:"Fattura fornitore Q1",proj:"Phoenix",ctx:"Quick",col:"inprog",pri:"P2"},
+  {id:7,name:"Preparare cover letter",proj:"Career",ctx:"Deep work",col:"inprog",pri:"P2"},
+  {id:8,name:"CV aggiornamento",proj:"Career",ctx:"Quick",col:"done",pri:"P3"},
+  {id:9,name:"Supabase schema v2",proj:"Amerigo",ctx:"Deep work",col:"done",pri:"P1"},
+  {id:10,name:"Contratto Ekaterina",proj:"Phoenix",ctx:"Quick",col:"done",pri:"P2"},
+  {id:11,name:"Setup Turborepo",proj:"Amerigo",ctx:"Deep work",col:"done",pri:"P1"},
+  {id:12,name:"Ricerca Aurora Energy",proj:"Career",ctx:"Quick",col:"done",pri:"P3"},
 ];
+
+function updateKPIs(){
+  document.getElementById('k-todo').textContent=taskData.filter(t=>t.col==='todo').length;
+  document.getElementById('k-done').textContent=taskData.filter(t=>t.col==='done').length;
+}
+updateKPIs();
+
+const ht=document.getElementById('home-tasks');
+taskData.filter(t=>t.col==='inprog').forEach(t=>{
+  ht.innerHTML+=`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f3f4f6;font-size:13px"><span style="width:6px;height:6px;border-radius:50%;background:#378ADD;flex-shrink:0"></span><span style="color:#111;flex:1">${t.name}</span><span style="font-size:11px;color:#6b7280">${t.proj}</span></div>`;
+});
+
 const cols={todo:"Todo",inprog:"In progress",done:"Done"};
+const ctxClass={"Deep work":"ktag-dw","Call":"ktag-call","Quick":"ktag-q"};
 
 function buildKanban(){
   const kb=document.getElementById('kanban-board');kb.innerHTML='';
@@ -201,26 +414,45 @@ function buildKanban(){
     const tasks=taskData.filter(t=>t.col===k);
     const col=document.createElement('div');col.className='kcol';col.dataset.col=k;
     col.innerHTML=`<div class="kcol-hdr"><span>${cols[k]}</span><span class="kcnt">${tasks.length}</span></div>`;
-    tasks.forEach(t=>{
-      const el=document.createElement('div');el.className='ktask';el.draggable=true;el.dataset.id=t.id;
-      el.innerHTML=`<div class="ktask-name">${t.name}</div><div class="ktask-meta"><span class="ktag">${t.proj}</span><span class="ktag">${t.ctx}</span></div>`;
-      el.addEventListener('dragstart',()=>{el.classList.add('dragging');window._drag=t.id;});
-      el.addEventListener('dragend',()=>el.classList.remove('dragging'));
-      col.appendChild(el);
-    });
+    const body=document.createElement('div');body.id='kcol-'+k;
+    tasks.forEach(t=>{body.appendChild(makeTask(t));});
+    col.appendChild(body);
+    const addRow=document.createElement('div');addRow.className='add-task-row';
+    addRow.innerHTML=`<input type="text" placeholder="Nuovo task..." id="ni-${k}"><button onclick="quickAdd('${k}')">+</button>`;
+    col.appendChild(addRow);
     col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('drag-over');});
     col.addEventListener('dragleave',()=>col.classList.remove('drag-over'));
-    col.addEventListener('drop',e=>{e.preventDefault();col.classList.remove('drag-over');const task=taskData.find(t=>t.id===window._drag);if(task){task.col=k;buildKanban();}document.getElementById('todo-cnt').textContent=taskData.filter(t=>t.col==='todo').length;document.getElementById('done-cnt').textContent=taskData.filter(t=>t.col==='done').length;});
+    col.addEventListener('drop',e=>{e.preventDefault();col.classList.remove('drag-over');const task=taskData.find(t=>t.id===window._drag);if(task&&task.col!==k){task.col=k;buildKanban();updateKPIs();}});
     kb.appendChild(col);
   });
+}
+
+function makeTask(t){
+  const el=document.createElement('div');el.className='ktask';el.draggable=true;el.dataset.id=t.id;
+  const ctxCls=t.ctx==='Deep work'?'ktag-dw':t.ctx==='Call'?'ktag-call':'ktag-q';
+  el.innerHTML=`<div class="ktask-name">${t.name}</div><div class="ktask-meta"><span class="ktag">${t.proj}</span><span class="ktag ${ctxCls}">${t.ctx}</span><span class="ktag b-p${t.pri[1]}" style="background:${t.pri==='P1'?'#FCEBEB':t.pri==='P2'?'#FAEEDA':'#f3f4f6'};color:${t.pri==='P1'?'#791F1F':t.pri==='P2'?'#633806':'#6b7280'}">${t.pri}</span></div>`;
+  el.addEventListener('dragstart',()=>{el.classList.add('dragging');window._drag=t.id;});
+  el.addEventListener('dragend',()=>el.classList.remove('dragging'));
+  return el;
+}
+
+function quickAdd(col){
+  const inp=document.getElementById('ni-'+col);
+  const val=inp.value.trim();if(!val)return;
+  taskData.push({id:Date.now(),name:val,proj:"—",ctx:"Quick",col:col,pri:"P3"});
+  inp.value='';buildKanban();updateKPIs();
 }
 buildKanban();
 
 const months=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
 const dnames=['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
-const now=new Date();
 let cur=new Date(now.getFullYear(),now.getMonth(),1);
-const evts={'2026-4-21':[{t:'Udienza Milano',c:'ev-b'}],'2026-4-23':[{t:'Amerigo demo',c:'ev-p'}],'2026-4-28':[{t:'Phoenix call',c:'ev-a'}]};
+let evts={
+  [`${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`]:[{t:'Oggi',c:'ev-g'}],
+  [`${now.getFullYear()}-${now.getMonth()+1}-23`]:[{t:'Amerigo demo',c:'ev-p'}],
+  [`${now.getFullYear()}-${now.getMonth()+1}-25`]:[{t:'Phoenix call',c:'ev-a'}],
+  [`${now.getFullYear()}-${now.getMonth()+1}-28`]:[{t:'Udienza Milano',c:'ev-b'}],
+};
 
 function buildCal(){
   const y=cur.getFullYear(),m=cur.getMonth();
@@ -246,11 +478,153 @@ function buildCal(){
 function cm(d){if(d===0)cur=new Date(now.getFullYear(),now.getMonth(),1);else cur=new Date(cur.getFullYear(),cur.getMonth()+d,1);buildCal();}
 buildCal();
 
+function addEvt(){
+  const title=document.getElementById('evt-title').value.trim();
+  const date=document.getElementById('evt-date').value;
+  const type=document.getElementById('evt-type').value;
+  if(!title||!date)return;
+  const parts=date.split('-');
+  const key=`${parseInt(parts[0])}-${parseInt(parts[1])}-${parseInt(parts[2])}`;
+  if(!evts[key])evts[key]=[];
+  evts[key].push({t:title,c:type});
+  document.getElementById('evt-title').value='';
+  document.getElementById('evt-date').value='';
+  buildCal();
+  document.getElementById('k-cal').textContent=Object.values(evts).flat().length;
+}
+
+const hcal=document.getElementById('home-cal');
+Object.entries(evts).slice(0,4).forEach(([k,arr])=>{
+  arr.forEach(e=>{
+    const parts=k.split('-');
+    hcal.innerHTML+=`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f3f4f6;font-size:13px"><div class="ev ${e.c}" style="flex-shrink:0;padding:2px 7px;border-radius:4px;font-size:11px">${parts[2]}/${parts[1]}</div><span style="color:#111">${e.t}</span></div>`;
+  });
+});
+
+const dailyTasks=[
+  {g:"Mattina",items:[
+    {id:'d1',label:"Rivedi Focus oggi (task + scadenze)",ctx:"5min"},
+    {id:'d2',label:"Controlla email prioritarie",ctx:"15min"},
+    {id:'d3',label:"Aggiorna Next step sui progetti",ctx:"5min"},
+  ]},
+  {g:"Lavoro profondo",items:[
+    {id:'d4',label:"Blocco deep work P1 (90 min)",ctx:"90min"},
+    {id:'d5',label:"Task P2 o P3 in coda",ctx:"45min"},
+  ]},
+  {g:"Pomeriggio",items:[
+    {id:'d6',label:"Leggi feed news (15 min max)",ctx:"15min"},
+    {id:'d7',label:"Rispondi messaggi e follow-up",ctx:"20min"},
+    {id:'d8',label:"Aggiorna Ultima attivita sui DB",ctx:"5min"},
+    {id:'d9',label:"Pianifica top 3 task domani",ctx:"5min"},
+  ]},
+];
+let dailyState={};
+dailyTasks.forEach(g=>g.items.forEach(i=>{dailyState[i.id]=false;}));
+
+function buildDaily(){
+  const dl=document.getElementById('daily-list');dl.innerHTML='';
+  const hd=document.getElementById('home-daily');hd.innerHTML='';
+  dailyTasks.forEach(g=>{
+    const grp=document.createElement('div');grp.className='task-grp';
+    grp.innerHTML=`<div class="task-grp-lbl">${g.g}</div>`;
+    g.items.forEach(item=>{
+      const el=document.createElement('div');el.className='daily-item';
+      el.innerHTML=`<div class="dcheck${dailyState[item.id]?' on':''}" id="dc-${item.id}"></div><span class="dlabel${dailyState[item.id]?' done':''}" id="dl-${item.id}">${item.label}</span><span class="dctx">${item.ctx}</span>`;
+      el.onclick=()=>{dailyState[item.id]=!dailyState[item.id];buildDaily();};
+      grp.appendChild(el);
+    });
+    dl.appendChild(grp);
+    if(g.g==='Mattina'){
+      g.items.slice(0,3).forEach(item=>{
+        hd.innerHTML+=`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f3f4f6;font-size:13px;cursor:pointer" onclick="dailyState['${item.id}']=!dailyState['${item.id}'];buildDaily();"><div style="width:16px;height:16px;border:1.5px solid ${dailyState[item.id]?'#0C447C':'#d1d5db'};border-radius:4px;background:${dailyState[item.id]?'#0C447C':'transparent'};flex-shrink:0"></div><span style="color:${dailyState[item.id]?'#9ca3af':'#111'};text-decoration:${dailyState[item.id]?'line-through':'none'}">${item.label}</span></div>`;
+      });
+    }
+  });
+  const total=Object.keys(dailyState).length;
+  const done=Object.values(dailyState).filter(Boolean).length;
+  const pct=Math.round(done/total*100);
+  document.getElementById('dprog').style.width=pct+'%';
+  document.getElementById('daily-score').textContent=`${done} / ${total} completati`;
+  document.getElementById('k-daily').textContent=pct+'%';
+  document.getElementById('home-daily-score').textContent=`${done}/${total}`;
+  const msgs=['Inizia la giornata!','Ottimo inizio!','Buon ritmo!','Quasi!','Giornata completata!'];
+  document.getElementById('daily-msg').textContent=pct===100?msgs[4]:pct>75?msgs[3]:pct>50?msgs[2]:pct>20?msgs[1]:msgs[0];
+}
+buildDaily();
+
+function resetDaily(){Object.keys(dailyState).forEach(k=>dailyState[k]=false);buildDaily();}
+
+const newsData=[
+  {cat:"Finance & Markets",items:[
+    {av:"IS",name:"Il Sole 24 Ore",desc:"Economia, fisco, mercati italiani",freq:"Daily",on:true},
+    {av:"FT",name:"Financial Times",desc:"Global markets & macro",freq:"Daily",on:true},
+    {av:"Bl",name:"Bloomberg Briefing",desc:"Morning macro briefing",freq:"Daily",on:false},
+  ]},
+  {cat:"Tech & AI",items:[
+    {av:"TL",name:"TLDR Newsletter",desc:"AI, dev tools, startup news",freq:"Daily",on:true},
+    {av:"HN",name:"Hacker News Digest",desc:"Top dev & tech discussion",freq:"Weekly",on:false},
+    {av:"Bt",name:"The Batch (DeepLearning.AI)",desc:"AI research recap",freq:"Weekly",on:true},
+  ]},
+  {cat:"Diritto & Commercialista",items:[
+    {av:"AE",name:"Agenzia delle Entrate",desc:"Aggiornamenti normativi italiani",freq:"Weekly",on:true},
+    {av:"GU",name:"Gazzetta Ufficiale",desc:"CCII, decreti, normativa",freq:"Weekly",on:true},
+  ]},
+];
+
+function buildNews(){
+  const nl=document.getElementById('news-list');nl.innerHTML='';
+  let activeCount=0;
+  newsData.forEach(cat=>{
+    const sec=document.createElement('div');sec.className='news-cat';
+    sec.innerHTML=`<div class="news-cat-lbl">${cat.cat}</div>`;
+    cat.items.forEach((item,idx)=>{
+      if(item.on)activeCount++;
+      const row=document.createElement('div');row.className='news-item';
+      row.innerHTML=`<div class="news-left"><div class="news-av">${item.av}</div><div><div class="news-name">${item.name}</div><div class="news-desc">${item.desc}</div></div></div><span class="news-freq">${item.freq}</span><button class="tog${item.on?' on':''}" onclick="toggleNews(this,'${cat.cat}',${idx})"></button>`;
+      sec.appendChild(row);
+    });
+    nl.appendChild(sec);
+  });
+  document.getElementById('news-active-count').textContent=`${activeCount} attive`;
+}
+
+function toggleNews(btn,catName,idx){
+  const cat=newsData.find(c=>c.cat===catName);
+  cat.items[idx].on=!cat.items[idx].on;
+  buildNews();
+}
+
+function addNews(){
+  const val=document.getElementById('news-input').value.trim();if(!val)return;
+  newsData[0].items.push({av:val.substring(0,2).toUpperCase(),name:val,desc:'Aggiunta manualmente',freq:'Weekly',on:true});
+  document.getElementById('news-input').value='';
+  buildNews();
+}
+buildNews();
+
 const co={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}};
-new Chart(document.getElementById('c1'),{type:'bar',data:{labels:['Amerigo','Phoenix','Career'],datasets:[{data:[8,5,4],backgroundColor:['#378ADD','#EF9F27','#639922'],borderRadius:4}]},options:{...co,scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.06)'},ticks:{stepSize:2}}}}});
-new Chart(document.getElementById('c2'),{type:'line',data:{labels:['Lun','Mar','Mer','Gio','Ven'],datasets:[{data:[2,4,1,3,2],borderColor:'#185FA5',backgroundColor:'rgba(55,138,221,.1)',fill:true,tension:.4,pointBackgroundColor:'#185FA5'}]},options:{...co,scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.06)'},ticks:{stepSize:1}}}}});
-new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:['Todo','In progress','Done'],datasets:[{data:[7,5,12],backgroundColor:['#888780','#378ADD','#639922'],borderWidth:0,hoverOffset:4}]},options:{...co,cutout:'65%'}});
-new Chart(document.getElementById('c4'),{type:'bar',data:{labels:['Lun','Mar','Mer','Gio','Ven','Sab','Dom'],datasets:[{label:'Aperti',data:[3,1,2,0,2,1,0],backgroundColor:'#B5D4F4',borderRadius:3},{label:'Chiusi',data:[2,3,1,2,1,0,1],backgroundColor:'#185FA5',borderRadius:3}]},options:{...co,scales:{x:{stacked:false,grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.06)'},ticks:{stepSize:1}}}}});
+new Chart(document.getElementById('c1'),{type:'bar',data:{labels:['Amerigo','Phoenix','Career'],datasets:[{data:[8,5,4],backgroundColor:['#378ADD','#EF9F27','#639922'],borderRadius:4}]},options:{...co,scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{stepSize:2}}}}});
+new Chart(document.getElementById('c2'),{type:'line',data:{labels:['Lun','Mar','Mer','Gio','Ven'],datasets:[{data:[2,4,1,3,2],borderColor:'#185FA5',backgroundColor:'rgba(55,138,221,.08)',fill:true,tension:.4,pointBackgroundColor:'#185FA5',pointRadius:4}]},options:{...co,scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{stepSize:1}}}}});
+new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:['Todo','In progress','Done'],datasets:[{data:[7,5,12],backgroundColor:['#d1d5db','#378ADD','#639922'],borderWidth:0,hoverOffset:4}]},options:{...co,cutout:'68%'}});
+new Chart(document.getElementById('c4'),{type:'bar',data:{labels:['Lun','Mar','Mer','Gio','Ven','Sab','Dom'],datasets:[{label:'Aperti',data:[3,1,2,0,2,1,0],backgroundColor:'#B5D4F4',borderRadius:3},{label:'Chiusi',data:[2,3,1,2,1,0,1],backgroundColor:'#185FA5',borderRadius:3}]},options:{...co,scales:{x:{stacked:false,grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{stepSize:1}}}}});
+
+const weekNum=(()=>{const d=new Date(Date.UTC(now.getFullYear(),now.getMonth(),now.getDate()));const dn=d.getUTCDay()||7;d.setUTCDate(d.getUTCDate()+4-dn);const ys=new Date(Date.UTC(d.getUTCFullYear(),0,1));return Math.ceil((((d-ys)/86400000)+1)/7);})();
+document.getElementById('weekly-week').textContent=`Settimana ${weekNum} · ${now.getFullYear()}`;
+
+['r-prod','r-focus','r-energia'].forEach(id=>{
+  const el=document.getElementById(id);
+  [1,2,3,4,5].forEach(n=>{
+    const s=document.createElement('span');s.className='wf-star';s.textContent='★';s.dataset.val=n;
+    s.onclick=()=>{el.querySelectorAll('.wf-star').forEach(st=>st.classList.toggle('on',+st.dataset.val<=n));};
+    el.appendChild(s);
+  });
+});
+
+function saveWeekly(){
+  const btn=document.getElementById('saved-msg');
+  btn.style.display='inline';
+  setTimeout(()=>btn.style.display='none',2500);
+}
 </script>
 </body>
 </html>
